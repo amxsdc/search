@@ -17,13 +17,14 @@ type Record struct {
 
 func GetRecordList(keyword string) ([]model.Record, error) {
 	var recordlist []model.Record
-	if err := dao.SqlSession.Table("record").Select("title").Where("title LIKE ?", keyword+"%").Find(&recordlist).Error; err != nil {
+	if err := dao.SqlSession.Table("records").Select("title").Where("title LIKE ?", keyword+"%").Find(&recordlist).Error; err != nil {
 		return recordlist, err
 	}
 	return recordlist, nil
 }
 
 func SaveKeyword(Keyword string) {
+
 	var c *gin.Context
 	id, err := getlastId()
 	if err != nil {
@@ -41,7 +42,7 @@ func SaveKeyword(Keyword string) {
 
 func getlastId() (uint, error) {
 	var lastId uint
-	if err := dao.SqlSession.Table("record").Select("id").Last(&record).Error; err != nil {
+	if err := dao.SqlSession.Table("records").Select("id").Last(&record).Error; err != nil {
 		return lastId, err
 	}
 	return lastId, nil

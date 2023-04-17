@@ -28,8 +28,7 @@ func Search(c *gin.Context) {
 	recordList = append(recordList, recordList_pinyin...)
 
 	// save keyword
-	service.SaveKeyword(keyword)
-	service.SaveKeyword(keyword_pinyin)
+	//service.SaveKeyword(keyword)
 
 	// record not found
 	if err != nil {
@@ -52,12 +51,23 @@ func Search(c *gin.Context) {
 	}
 
 	//resp
-	c.JSON(http.StatusOK, RecordListResp{
-		Response: common.Response{
-			StatusCode: 0,
-			StatusMsg:  "Successfully found the record list.",
-		},
-		RecordList: RespRecordList,
-	})
+	if RespRecordList == nil {
+		service.SaveKeyword(keyword)
+		c.JSON(http.StatusOK, common.Response{
+			StatusCode: 403,
+			StatusMsg:  "Failed to get recordList",
+		})
+		c.Abort()
+		return
+
+	} else {
+		c.JSON(http.StatusOK, RecordListResp{
+			Response: common.Response{
+				StatusCode: 0,
+				StatusMsg:  "Successfully found the record list.",
+			},
+			RecordList: RespRecordList,
+		})
+	}
 
 }
