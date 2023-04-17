@@ -1,0 +1,6 @@
+ url: localhost
+ userName: root
+ passWord: njl123456
+ dbName: search
+ port: 3306
+
